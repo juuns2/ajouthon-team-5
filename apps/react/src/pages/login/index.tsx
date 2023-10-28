@@ -9,6 +9,30 @@ export default function LoginPage() {
     const navigate = useNavigate();
     const googleLoginMutation = trpc.auth.googleLogin.useMutation();
 
+    const login = useGoogleLogin({
+        onSuccess: (response) => {
+            if (response?.credential) {
+                googleLoginMutation.mutate(response.credential, {
+                    onSuccess: (data) => {
+                        if (data.nickname === null) {
+                            return navigate('/register');
+                        }
+                        return navigate('/');
+                    },
+                });
+            }
+        },
+        onError: (error) => {
+            console.log('Login Failed', error);
+        },
+    });
+
+    // const handleGoogleLoginClick = () => {
+    //     if (loaded) {
+    //         signIn();
+    //     }
+    // };
+
     return (
         <div className="flex h-[100dvh] w-screen flex-col items-center justify-center">
             <div className='login-container'>
@@ -17,28 +41,7 @@ export default function LoginPage() {
                 <h4>로그인은 아주대학교 계정으로 연동해주세요!</h4>
                 <br></br>
                 <h3>Login</h3>
-                {/* <div className='login-btn'> */}
-                    <GoogleLogin
-                        onSuccess={(credentialResponse) => {
-                            if (credentialResponse.credential) {
-                                googleLoginMutation.mutate(
-                                    credentialResponse.credential,
-                                    {
-                                        onSuccess: (data) => {
-                                            if (data.nickname === null) {
-                                                return navigate('/register');
-                                            }
-                                            return navigate('/');
-                                        },
-                                    },
-                                );
-                            }
-                        }}
-                        onError={() => {
-                            console.log('Login Failed');
-                        }}
-                    />
-                {/* </div> */}
+                <button className='google-login-btn' onClick={() => login()}>Continue with Google</button>
             </div>
         </div>
     );
