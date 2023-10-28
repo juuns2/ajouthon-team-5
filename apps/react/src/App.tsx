@@ -1,27 +1,26 @@
-import { Map } from 'react-kakao-maps-sdk';
-
+import React, { useEffect, useState } from "react";
+// import { Map } from 'react-kakao-maps-sdk';
 import trpc from './utils/trpc';
+import ToggleButtons from './components/ToggleButtons';
+import KakaoMap from "./components/KakaoMap";
+
+import { mockDatas } from "./mockdata";
+
 
 const App = () => {
     const { isLoading } = trpc.example.useQuery();
 
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    
+    const handleCategoryToggle = (categories: string[]) => {
+        // 선택된 카테고리를 업데이트
+        setSelectedCategories(categories);
+    };
+
     return (
         <main className="flex h-[100dvh] w-screen flex-col items-center justify-center">
-            <Map // 지도를 표시할 Container
-                id="map"
-                center={{
-                    // 지도의 중심좌표
-                    lat: 33.450701,
-                    lng: 126.570667,
-                }}
-                style={{
-                    // 지도의 크기
-                    width: '100%',
-                    height: '100%',
-                }}
-                level={3} // 지도의 확대 레벨
-            />
-            <h2 className="bg-ajou-blue">test</h2>
+            <ToggleButtons onCategoryToggle={handleCategoryToggle} />
+            <KakaoMap markers={mockDatas} selectedCategories={selectedCategories} />
         </main>
     );
 };
