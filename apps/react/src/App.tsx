@@ -15,10 +15,8 @@ import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import MessageInput from './MessageInput';
 import MessagePopup from './MessagePopup';
 import MyMessage from './MyMessage';
-import KakaoMap from './components/KakaoMap';
 import ToggleButtons from './components/ToggleButtons';
 import { mockDatas } from './mockdata';
-// import { Map } from 'react-kakao-maps-sdk';
 import trpc from './utils/trpc';
 
 const MotionButton = motion(Button);
@@ -28,8 +26,7 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
     lng,
 }) => {
     return (
-        <CustomOverlayMap // 커스텀 오버레이를 표시할 Container
-            // 커스텀 오버레이가 표시될 위치입니다
+        <CustomOverlayMap
             position={{
                 lat: lat,
                 lng: lng,
@@ -51,7 +48,6 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
                         },
                     }}
                 >
-                    {/* 커스텀 오버레이에 표시할 내용입니다 */}
                     <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md">
                         <ZapIcon size={32} strokeWidth="1" fill="yellow" />
                         <div className="absolute -bottom-1 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md">
@@ -130,7 +126,7 @@ const App = () => {
             <DialogTrigger>
                 <Button
                     className={
-                        'fixed bottom-3 right-3 h-16 w-16 rounded-full bg-white drop-shadow-lg'
+                        'fixed bottom-3 right-3 z-10 h-16 w-16 rounded-full bg-white drop-shadow-lg'
                     }
                 >
                     글 쓰기
