@@ -62,7 +62,6 @@ export const ThunderMarker: React.FC<{
                     </div>
                 </MotionButton>
                 <Popover
-                    isNonModal
                     placement="top"
                     arrowSize={6}
                     className={({ isEntering, isExiting }) => `

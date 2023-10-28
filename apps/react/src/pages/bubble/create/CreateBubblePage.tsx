@@ -168,9 +168,14 @@ const MessageInput: React.FC = () => {
                                 className="submit-btn"
                                 type="submit"
                                 onClick={() => {
+                                    if (!selectedCategory) {
+                                        alert('카테고리를 선택해주세요');
+                                        return;
+                                    }
+
                                     createBubbleMutation.mutate(
                                         {
-                                            category: 'food',
+                                            category: selectedCategory,
                                             latitude: lat!,
                                             longitude: lng!,
                                             message: message,
