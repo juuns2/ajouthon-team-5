@@ -10,7 +10,7 @@ import trpc from '../utils/trpc';
 import { queryClient } from './query';
 
 const wsClient = createWSClient({
-    url: `ws://localhost:5173/websocket`,
+    url: `ws://${window.location.host}/websocket`,
 });
 
 const trpcClient = trpc.createClient({

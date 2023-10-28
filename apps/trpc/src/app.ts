@@ -27,14 +27,14 @@ const server = http.createServer(app);
 
 const wss = new ws.Server({ server });
 const wsHandler = applyWSSHandler<AppRouter>({
-    wss: wss, // * <- pass the server
-    router: appRouter, // * <- pass the router
-    createContext, // * <- pass the context
+    wss: wss,
+    router: appRouter,
+    createContext,
 });
 
 app.use(
     cors({
-        origin: ['http://localhost:5173'],
+        origin: ['*'],
     }),
 );
 

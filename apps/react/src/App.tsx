@@ -4,6 +4,7 @@ import { LongPressEventType, useLongPress } from 'use-long-press';
 
 import MessageInput from './MessageInput';
 import MyMessage from './MyMessage';
+import MyPageIcon from './MyPageIcon';
 import { ThunderMarker } from './ThunderMarker';
 import ToggleButtons from './components/ToggleButtons';
 import trpc from './utils/trpc';
@@ -101,7 +102,7 @@ const App = () => {
             >
                 {filteredData.map((data) => (
                     <ThunderMarker
-                        username={data.user.nickname}
+                        nickname={data.user.nickname}
                         category={data.bubble.category}
                         key={data.bubble.id}
                         lat={data.bubble.latitude}
@@ -123,6 +124,7 @@ const App = () => {
                 }
             />
 
+            <MyPageIcon />
             {/* <MyMessage /> */}
         </main>
     );
