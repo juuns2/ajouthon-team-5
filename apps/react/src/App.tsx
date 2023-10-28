@@ -9,6 +9,7 @@ import {
     Popover,
 } from 'react-aria-components';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
+
 import MessageInput from './MessageInput';
 import MessagePopup from './MessagePopup';
 import MyMessage from './MyMessage';
@@ -60,7 +61,7 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
                     placement="top"
                     arrowSize={6}
                     className={({ isEntering, isExiting }) => `
-        placement-bottom:mt-2 placement-top:mb-2 group w-[280px] rounded-lg bg-white ring-1 ring-black/10 drop-shadow-lg
+        placement-bottom:mt-2 placement-top:mb-2 group rounded-lg 
         ${
             isEntering
                 ? 'animate-in fade-in placement-bottom:slide-in-from-top-1 placement-top:slide-in-from-bottom-1 duration-200 ease-out'
@@ -74,7 +75,9 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
       `}
                 >
                     <OverlayArrow />
-                    <Dialog>test</Dialog>
+                    <Dialog>
+                        <MessagePopup />
+                    </Dialog>
                 </Popover>
             </DialogTrigger>
         </CustomOverlayMap>
@@ -120,9 +123,8 @@ const App = () => {
                     />
                 ))}
             </Map>
-      <MessageInput/>
-      <MessagePopup/>
-      <MyMessage/>
+            {/* <MessageInput />
+            <MyMessage /> */}
         </main>
     );
 };
