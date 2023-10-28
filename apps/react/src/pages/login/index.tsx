@@ -2,7 +2,7 @@ import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 
 import trpc from '../../utils/trpc';
-//import "../../css/login.css"
+import "../../css/login.css"
 import styled from 'styled-components';
 
 export default function LoginPage() {
