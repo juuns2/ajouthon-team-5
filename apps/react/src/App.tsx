@@ -1,11 +1,35 @@
+import { HeartIcon, ZapIcon } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 
 import KakaoMap from './components/KakaoMap';
 import ToggleButtons from './components/ToggleButtons';
 import { mockDatas } from './mockdata';
 // import { Map } from 'react-kakao-maps-sdk';
 import trpc from './utils/trpc';
+
+const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
+    lat,
+    lng,
+}) => {
+    return (
+        <CustomOverlayMap // 커스텀 오버레이를 표시할 Container
+            // 커스텀 오버레이가 표시될 위치입니다
+            position={{
+                lat: lat,
+                lng: lng,
+            }}
+        >
+            {/* 커스텀 오버레이에 표시할 내용입니다 */}
+            <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md">
+                <ZapIcon size={32} strokeWidth="1" fill="yellow" />
+            </div>
+            <div className="absolute -bottom-1 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md">
+                <HeartIcon size={12} strokeWidth="1" fill="red" />
+            </div>
+        </CustomOverlayMap>
+    );
+};
 
 const App = () => {
     const { isLoading } = trpc.example.useQuery();
@@ -36,19 +60,10 @@ const App = () => {
                 level={3}
             >
                 {filteredData.map((data) => (
-                    <MapMarker
+                    <ThunderMarker
                         key={data.content}
-                        position={{
-                            lat: data.latitude,
-                            lng: data.longitude,
-                        }}
-                        image={{
-                            src: `/public/thunder_${data.category}.png`,
-                            size: {
-                                width: 60,
-                                height: 60,
-                            },
-                        }}
+                        lat={data.latitude}
+                        lng={data.longitude}
                     />
                 ))}
             </Map>
