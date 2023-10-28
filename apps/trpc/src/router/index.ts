@@ -5,12 +5,10 @@ import schema from '../schema';
 import { mergeRouters, protectedProcedure, t } from '../trpc';
 import AuthRouter from './auth';
 import BubbleRouter from './bubble';
-import ExampleRouter from './example';
 
 type AppRouter = typeof appRouter;
 
 const appRouter = mergeRouters(
-    ExampleRouter,
     t.router({
         auth: AuthRouter,
         bubble: BubbleRouter,

@@ -8,8 +8,6 @@ import ToggleButtons from './components/ToggleButtons';
 import trpc from './utils/trpc';
 
 const App = () => {
-    const { isLoading } = trpc.example.useQuery();
-
     const { data: bubbleData } = trpc.bubble.getAll.useQuery(undefined, {
         initialData: [],
     });
