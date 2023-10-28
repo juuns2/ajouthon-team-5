@@ -66,13 +66,28 @@ const StyleComp = styled.div`
         height: 198px;
         border-radius: 12px;
         background: rgba(217, 217, 217, 0.38);
+        position:relative;
     }
-    .message-container input {
+    .message-container textarea {
         width: 100%;
         height: 100%;
         background: rgba(217, 217, 217, 0.38);
         text-align: center;
     }
+    .placeholder-text{
+        width:100%;
+        position:absolute;
+        top:10px;
+        text-align:center;
+        font-size: 15px;
+color: #C1C1C1;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+    }
+    .message-container textarea:focus + .placeholder-text {
+        display: none;
+      }
     .submit-btn {
         background-color: rgba(42, 100, 173, 0.3);
         width: 221px;
@@ -87,6 +102,8 @@ function MessageInput() {
     const [GameBtn, setGameBtn] = useState(false);
     const [OtherBtn, setOtherBtn] = useState(false);
 
+    const [text, setText] = useState('');
+
     const handleButtonClick = (category: string) => {
         //클릭 시 버튼 색상 변경
         setStudyBtn(category === 'study' ? !StudyBtn : false);
@@ -95,6 +112,8 @@ function MessageInput() {
         setGameBtn(category === 'game' ? !GameBtn : false);
         setOtherBtn(category === 'other' ? !OtherBtn : false);
     };
+
+    
 
     return (
         <StyleComp>
@@ -180,10 +199,13 @@ function MessageInput() {
                                 </div>
                             </div>
                             <label className="message-container">
-                                <input
-                                    type="text"
-                                    placeholder="시간과 장소를 입력하세요"
-                                />
+                            <textarea
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                                rows={4} // 지정된 줄 수보다 많이 입력하면 스크롤됩니다.
+                                cols={20} // 열의 수를 조절할 수 있습니다.
+                            />
+                            <div className="placeholder-text">모임의 장소, 시간, 내용을 작성해주세요.<br />메세지는 24시간 이후 자동 삭제됩니다.</div>
                             </label>
                             <button className="submit-btn" type="submit">
                                 등록하기

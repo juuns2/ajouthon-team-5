@@ -18,6 +18,7 @@ import MyMessage from './MyMessage';
 import ToggleButtons from './components/ToggleButtons';
 import { mockDatas } from './mockdata';
 import trpc from './utils/trpc';
+import MessageRepeatPopUp from './MessageRepeatPopUp';
 
 const MotionButton = motion(Button);
 
@@ -75,6 +76,7 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
                     <OverlayArrow />
                     <Dialog>
                         <MessagePopup />
+                        
                     </Dialog>
                 </Popover>
             </DialogTrigger>
