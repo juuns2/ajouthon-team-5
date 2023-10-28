@@ -58,10 +58,13 @@ const App = () => {
             >
                 {filteredData.map((data) => (
                     <ThunderMarker
+                        userId={data.userId}
                         category={data.category}
                         key={data.content}
+                        content={data.content}
                         lat={data.latitude}
                         lng={data.longitude}
+                        likes={data.likes}
                     />
                 ))}
             </Map>
