@@ -21,6 +21,8 @@ import { mockDatas } from './mockdata';
 // import { Map } from 'react-kakao-maps-sdk';
 import trpc from './utils/trpc';
 
+const MotionButton = motion(Button);
+
 const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
     lat,
     lng,
@@ -34,31 +36,29 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
             }}
         >
             <DialogTrigger>
-                <Button>
-                    <motion.div
-                        className="cursor-pointer select-none"
-                        whileTap={{
-                            scale: 1.2,
-                            transition: {
-                                duration: 0.2,
-                            },
-                        }}
-                        whileHover={{
-                            scale: 1.2,
-                            transition: {
-                                duration: 0.2,
-                            },
-                        }}
-                    >
-                        {/* 커스텀 오버레이에 표시할 내용입니다 */}
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md">
-                            <ZapIcon size={32} strokeWidth="1" fill="yellow" />
-                        </div>
+                <MotionButton
+                    className="cursor-pointer select-none focus:ring-0"
+                    whileTap={{
+                        scale: 1.2,
+                        transition: {
+                            duration: 0.2,
+                        },
+                    }}
+                    whileHover={{
+                        scale: 1.2,
+                        transition: {
+                            duration: 0.2,
+                        },
+                    }}
+                >
+                    {/* 커스텀 오버레이에 표시할 내용입니다 */}
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md">
+                        <ZapIcon size={32} strokeWidth="1" fill="yellow" />
                         <div className="absolute -bottom-1 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md">
                             <HeartIcon size={12} strokeWidth="1" fill="red" />
                         </div>
-                    </motion.div>
-                </Button>
+                    </div>
+                </MotionButton>
                 <Popover
                     placement="top"
                     arrowSize={6}
@@ -109,8 +109,8 @@ const App = () => {
     return (
         <main className="flex h-[100dvh] w-screen flex-col items-center justify-center">
             <ToggleButtons onCategoryToggle={handleCategoryToggle} />
+
             <Map
-                className="-z-10"
                 onRightClick={(t, e) => {
                     console.log(e.latLng);
                 }}
