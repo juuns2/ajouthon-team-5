@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { HeartIcon, ZapIcon } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
@@ -20,13 +21,23 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
                 lng: lng,
             }}
         >
-            {/* 커스텀 오버레이에 표시할 내용입니다 */}
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md">
-                <ZapIcon size={32} strokeWidth="1" fill="yellow" />
-            </div>
-            <div className="absolute -bottom-1 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md">
-                <HeartIcon size={12} strokeWidth="1" fill="red" />
-            </div>
+            <motion.div
+                className="cursor-pointer"
+                whileHover={{
+                    scale: 1.2,
+                    transition: {
+                        duration: 0.2,
+                    },
+                }}
+            >
+                {/* 커스텀 오버레이에 표시할 내용입니다 */}
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md">
+                    <ZapIcon size={32} strokeWidth="1" fill="yellow" />
+                </div>
+                <div className="absolute -bottom-1 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md">
+                    <HeartIcon size={12} strokeWidth="1" fill="red" />
+                </div>
+            </motion.div>
         </CustomOverlayMap>
     );
 };
