@@ -101,6 +101,7 @@ const App = () => {
             >
                 {filteredData.map((data) => (
                     <ThunderMarker
+                        username={data.user.nickname}
                         category={data.bubble.category}
                         key={data.bubble.id}
                         lat={data.bubble.latitude}

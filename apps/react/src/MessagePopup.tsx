@@ -46,7 +46,13 @@ const StyleComp = styled.div`
     }
 `;
 
-function MessagePopup({ message }: { message: string }) {
+function MessagePopup({
+    nickname,
+    message,
+}: {
+    nickname: string;
+    message: string;
+}) {
     const [LikeBtn, setLikeBtn] = useState(false);
 
     const handleButtonClick = () => {
@@ -56,7 +62,7 @@ function MessagePopup({ message }: { message: string }) {
         <StyleComp>
             <div className="main-container">
                 <img className="chito-img" src="/chito2.png"></img>
-                <div className="user-name">닉네임</div>
+                <div className="user-name">{nickname}</div>
                 <div className="message-container">{message}</div>
                 <button
                     className="like-btn"
