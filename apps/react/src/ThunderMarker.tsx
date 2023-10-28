@@ -10,7 +10,7 @@ import {
 } from 'react-aria-components';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 
-import MessagePopup from './components/MessagePopup';
+import BubblePopup from './components/BubblePopup';
 import CategoryInfo from './data/category';
 
 const MotionButton = motion(Button);
@@ -20,7 +20,8 @@ export const ThunderMarker: React.FC<{
     lng: number;
     category: keyof typeof CategoryInfo;
     message: string;
-}> = ({ lat, lng, category, message, nickname }) => {
+    meEmoji: boolean;
+}> = ({ lat, lng, category, message, nickname, meEmoji = false }) => {
     const IconComponent = CategoryInfo[category].icon;
 
     return (
@@ -47,9 +48,11 @@ export const ThunderMarker: React.FC<{
                     }}
                 >
                     <div
-                        className={`flex h-14 w-14 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md`}
+                        className={`flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border-4 border-orange-500 bg-slate-500 shadow-md`}
                     >
-                        <ZapIcon size={36} strokeWidth="1" fill="yellow" />
+                        <span className="text-base font-bold text-white">
+                            {nickname}
+                        </span>
                         <div
                             className={
                                 'absolute -bottom-2 -right-3 flex h-8 w-8 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md ' +
@@ -59,6 +62,19 @@ export const ThunderMarker: React.FC<{
                         >
                             <IconComponent size={16} strokeWidth="2" />
                         </div>
+                        {
+                            <div
+                                className={
+                                    'absolute -right-2 -top-1 flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 bg-gradient-to-tr from-pink-500 to-yellow-500 shadow-md'
+                                }
+                            >
+                                <ZapIcon
+                                    size={16}
+                                    strokeWidth="1"
+                                    fill="yellow"
+                                />
+                            </div>
+                        }
                     </div>
                 </MotionButton>
                 <Popover
@@ -80,7 +96,7 @@ export const ThunderMarker: React.FC<{
                 >
                     <OverlayArrow />
                     <Dialog>
-                        <MessagePopup nickname={nickname} message={message} />
+                        <BubblePopup nickname={nickname} message={message} />
                     </Dialog>
                 </Popover>
             </DialogTrigger>

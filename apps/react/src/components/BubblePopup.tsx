@@ -46,7 +46,7 @@ const StyleComp = styled.div`
     }
 `;
 
-function MessagePopup({
+function BubblePopup({
     nickname,
     message,
 }: {
@@ -100,4 +100,4 @@ function MessagePopup({
     );
 }
 
-export default MessagePopup;
+export default BubblePopup;
