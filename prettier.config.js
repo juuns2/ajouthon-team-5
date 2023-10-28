@@ -1,6 +1,6 @@
 // prettier.config.js
 module.exports = {
-    printWidth: 80,
+    printWidth: 120,
     tabWidth: 4,
     trailingComma: 'all',
     singleQuote: true,
