@@ -11,6 +11,9 @@ import {
 } from 'react-aria-components';
 import styled from 'styled-components';
 
+import CategoryInfo from './components/category';
+import trpc from './utils/trpc';
+
 //화면을 꾹 누르면 뜨는 메세지를 작성하는 팝업 (화면누를때 뜨는건 구현해야함)
 const StyleComp = styled.div`
     .main-container {
@@ -65,28 +68,13 @@ const StyleComp = styled.div`
         height: 198px;
         border-radius: 12px;
         background: rgba(217, 217, 217, 0.38);
-        position:relative;
     }
-    .message-container textarea {
+    .message-container input {
         width: 100%;
         height: 100%;
         background: rgba(217, 217, 217, 0.38);
         text-align: center;
     }
-    .placeholder-text{
-        width:100%;
-        position:absolute;
-        top:10px;
-        text-align:center;
-        font-size: 15px;
-color: #C1C1C1;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
-    }
-    .message-container textarea:focus + .placeholder-text {
-        display: none;
-      }
     .submit-btn {
         background-color: rgba(42, 100, 173, 0.3);
         width: 221px;
@@ -98,24 +86,10 @@ const MessageInput: React.FC<{
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
 }> = ({ isOpen, onOpenChange }) => {
-    const [StudyBtn, setStudyBtn] = useState(false);
-    const [FoodBtn, setFoodBtn] = useState(false);
-    const [ExerciseBtn, setExerciseBtn] = useState(false);
-    const [GameBtn, setGameBtn] = useState(false);
-    const [OtherBtn, setOtherBtn] = useState(false);
+    const createBubbleMutation = trpc.bubble.add.useMutation();
 
-    const [text, setText] = useState('');
-
-    const handleButtonClick = (category: string) => {
-        //클릭 시 버튼 색상 변경
-        setStudyBtn(category === 'study' ? !StudyBtn : false);
-        setFoodBtn(category === 'food' ? !FoodBtn : false);
-        setExerciseBtn(category === 'exercise' ? !ExerciseBtn : false);
-        setGameBtn(category === 'game' ? !GameBtn : false);
-        setOtherBtn(category === 'other' ? !OtherBtn : false);
-    };
-
-    
+    const [selectedCategory, setSelectedCategory] =
+        useState<keyof typeof CategoryInfo>();
 
     return (
         <Modal isDismissable={true} isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -142,74 +116,49 @@ const MessageInput: React.FC<{
                                 </button>
                             </div>
                             <div className="category-container">
-                                <div
-                                    className="category"
-                                    onClick={() => handleButtonClick('study')}
-                                    style={{
-                                        backgroundColor: StudyBtn
-                                            ? '#2A64AD'
-                                            : 'rgba(42, 100, 173, 0.30)',
-                                    }}
-                                >
-                                    공부
-                                </div>
-                                <div
-                                    className="category"
-                                    onClick={() => handleButtonClick('food')}
-                                    style={{
-                                        backgroundColor: FoodBtn
-                                            ? '#2A64AD'
-                                            : 'rgba(42, 100, 173, 0.30)',
-                                    }}
-                                >
-                                    밥&술
-                                </div>
-                                <div
-                                    className="category"
-                                    onClick={() =>
-                                        handleButtonClick('exercise')
-                                    }
-                                    style={{
-                                        backgroundColor: ExerciseBtn
-                                            ? '#2A64AD'
-                                            : 'rgba(42, 100, 173, 0.30)',
-                                    }}
-                                >
-                                    운동
-                                </div>
-                                <div
-                                    className="category"
-                                    onClick={() => handleButtonClick('game')}
-                                    style={{
-                                        backgroundColor: GameBtn
-                                            ? '#2A64AD'
-                                            : 'rgba(42, 100, 173, 0.30)',
-                                    }}
-                                >
-                                    게임
-                                </div>
-                                <div
-                                    className="category"
-                                    onClick={() => handleButtonClick('other')}
-                                    style={{
-                                        backgroundColor: OtherBtn
-                                            ? '#2A64AD'
-                                            : 'rgba(42, 100, 173, 0.30)',
-                                    }}
-                                >
-                                    기타
-                                </div>
+                                {Object.entries(CategoryInfo).map(
+                                    ([key, value]) => (
+                                        <div
+                                            key={key}
+                                            className="category"
+                                            onClick={() =>
+                                                setSelectedCategory(key)
+                                            }
+                                            style={{
+                                                backgroundColor:
+                                                    selectedCategory === key
+                                                        ? '#2A64AD'
+                                                        : 'rgba(42, 100, 173, 0.30)',
+                                            }}
+                                        >
+                                            {<value.icon size={16} />}
+                                            {value.title}
+                                        </div>
+                                    ),
+                                )}
                             </div>
                             <label className="message-container">
-                            <textarea
-                                value={text}
-                                onChange={(e) => setText(e.target.value)}
-                                rows={4} // 지정된 줄 수보다 많이 입력하면 스크롤됩니다.
-                                cols={20} // 열의 수를 조절할 수 있습니다.
-                            />
-                            <div className="placeholder-text">모임의 장소, 시간, 내용을 작성해주세요.<br />메세지는 24시간 이후 자동 삭제됩니다.</div>
+                                <textarea
+                                    placeholder="시간과 장소를 입력하세요"
+                                    className="h-full w-full bg-transparent p-2"
+                                />
                             </label>
-                            <button className="submit-btn" type="submit">
+                            <button
+                                className="submit-btn"
+                                type="submit"
+                                onClick={() => {
+                                    createBubbleMutation.mutate(
+                                        {
+                                            text: 'test',
+                                        },
+                                        {
+                                            onSuccess: () => {
+                                                close();
+                                            },
+                                        },
+                                    );
+                                }}
+                            >
                                 등록하기
                             </button>
                         </>

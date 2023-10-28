@@ -4,14 +4,14 @@ import { z } from 'zod';
 import schema from '../schema';
 import { mergeRouters, protectedProcedure, t } from '../trpc';
 import AuthRouter from './auth';
-import ExampleRouter from './example';
+import BubbleRouter from './bubble';
 
 type AppRouter = typeof appRouter;
 
 const appRouter = mergeRouters(
-    ExampleRouter,
     t.router({
         auth: AuthRouter,
+        bubble: BubbleRouter,
         getMyInfo: protectedProcedure.query(async ({ ctx }) => {
             const [userInfo] = await ctx.db
                 .select()

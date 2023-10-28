@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 //메인 화면에서 번개를 클릭하면 보여지는 메세지 팝업
@@ -46,24 +46,36 @@ const StyleComp = styled.div`
     }
 `;
 
-function MessagePopup() {
+function MessagePopup({ userId, content, prevLikes }) {
     const [LikeBtn, setLikeBtn] = useState(false);
+    const [likes, setLikes] = useState(prevLikes);
 
     const handleButtonClick = () => {
         setLikeBtn(!LikeBtn);
     };
+
+    useEffect(() => {
+        if (likes==prevLikes && LikeBtn) {
+            setLikes(likes + 1);
+        } 
+        else if (likes==prevLikes+1 && !LikeBtn) {
+            setLikes(likes - 1);
+        }
+    }, [LikeBtn]);
+
+
     return (
         <StyleComp>
             <div className="main-container">
                 <img className="chito-img" src="/chito2.png"></img>
-                <div className="user-name">닉네임</div>
-                <div className="message-container">메세지</div>
+                <div className="user-name">{userId}</div>
+                <div className="message-container">{content}</div>
                 <button
                     className="like-btn"
                     onClick={handleButtonClick}
                     style={{ color: LikeBtn ? '#2A64AD' : '#FFFFFF' }}
                 >
-                    <div>25</div>
+                    <div>{likes}</div>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
