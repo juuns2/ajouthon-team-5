@@ -13,7 +13,6 @@ import styled from 'styled-components';
 
 //화면을 꾹 누르면 뜨는 메세지를 작성하는 팝업 (화면누를때 뜨는건 구현해야함)
 const StyleComp = styled.div`
-    margin: 100px;
     .main-container {
         padding: 10px;
         width: 292px;
@@ -80,7 +79,10 @@ const StyleComp = styled.div`
         border-radius: 25px;
     }
 `;
-function MessageInput() {
+const MessageInput: React.FC<{
+    isOpen: boolean;
+    onOpenChange: (isOpen: boolean) => void;
+}> = ({ isOpen, onOpenChange }) => {
     const [StudyBtn, setStudyBtn] = useState(false);
     const [FoodBtn, setFoodBtn] = useState(false);
     const [ExerciseBtn, setExerciseBtn] = useState(false);
@@ -97,8 +99,8 @@ function MessageInput() {
     };
 
     return (
-        <StyleComp>
-            <Modal isDismissable={true}>
+        <Modal isDismissable={true} isOpen={isOpen} onOpenChange={onOpenChange}>
+            <StyleComp>
                 <Dialog className="main-container">
                     {({ close }) => (
                         <>
@@ -191,9 +193,9 @@ function MessageInput() {
                         </>
                     )}
                 </Dialog>
-            </Modal>
-        </StyleComp>
+            </StyleComp>
+        </Modal>
     );
-}
+};
 
 export default MessageInput;

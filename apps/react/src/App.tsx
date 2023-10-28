@@ -99,6 +99,8 @@ const App = () => {
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
+    let [isOpen, setOpen] = React.useState(false);
+
     const handleCategoryToggle = (categories: string[]) => {
         // 선택된 카테고리를 업데이트
         setSelectedCategories(categories);
@@ -120,7 +122,7 @@ const App = () => {
 
             <Map
                 onRightClick={(t, e) => {
-                    console.log(e.latLng);
+                    setOpen(true);
                 }}
                 style={{ width: '100%', height: '100%' }}
                 center={{ lat: 37.282, lng: 127.045 }}
@@ -136,18 +138,7 @@ const App = () => {
                 ))}
             </Map>
 
-            <DialogTrigger>
-                <Button
-                    className={
-                        'fixed bottom-3 right-3 z-10 h-16 w-16 rounded-full bg-white drop-shadow-lg'
-                    }
-                >
-                    글 쓰기
-                </Button>
-                <ModalOverlay>
-                    <MessageInput />
-                </ModalOverlay>
-            </DialogTrigger>
+            <MessageInput isOpen={isOpen} onOpenChange={setOpen} />
 
             {/* <MyMessage /> */}
         </main>
