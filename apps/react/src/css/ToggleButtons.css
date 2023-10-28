@@ -1,0 +1,35 @@
+.button-container {
+    /* justify-content: space-around; */
+    overflow-x: auto;
+    white-space: nowrap;
+    z-index: 9999;
+
+    /* 스크롤바 숨김 처리 */
+    scrollbar-width: none; /* Firefox에 대한 스크롤바 숨김 (Mozilla Firefox) */
+    -ms-overflow-style: none; /* Internet Explorer에 대한 스크롤바 숨김 (Microsoft IE/Edge) */
+}
+
+/* Webkit 기반 브라우저 (Chrome, Safari)에 대한 스크롤바 숨김 */
+.button-container::-webkit-scrollbar {
+    display: none;
+}
+
+.toggle-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    background-color: #bfd0e6;
+    color: #4c535c;
+    font-weight: bold;
+    border: 2px solid #bfd0e6;
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.toggle-button.active {
+    background-color: #2a64ad;
+    color: white;
+}

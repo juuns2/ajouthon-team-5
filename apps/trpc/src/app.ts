@@ -1,28 +1,42 @@
-import express from "express";
-import cors from "cors";
-import * as trpcExpress from "@trpc/server/adapters/express";
-import appRouter from "./router";
+import * as trpcExpress from '@trpc/server/adapters/express';
+import cors from 'cors';
+import express from 'express';
+import session from 'express-session';
 
-const createContext = ({
-  req,
-  res,
-}: trpcExpress.CreateExpressContextOptions) => ({ req, res });
+import db from './db';
+import appRouter from './router';
 
 const app = express();
 
-app.use(express.json());
 app.use(
-  cors({
-    origin: ["https://vite-rpc-react.vercel.app", "http://localhost:5173"],
-  })
+    session({
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false },
+    }),
 );
 
+app.use(express.json());
 app.use(
-  "/trpc",
-  trpcExpress.createExpressMiddleware({
-    router: appRouter,
-    createContext,
-  })
+    cors({
+        origin: ['https://vite-rpc-react.vercel.app', 'http://localhost:5173'],
+    }),
+);
+
+const createContext = ({
+    req,
+    res,
+}: trpcExpress.CreateExpressContextOptions) => {
+    return { req, res, db };
+};
+
+app.use(
+    '/trpc',
+    trpcExpress.createExpressMiddleware({
+        router: appRouter,
+        createContext,
+    }),
 );
 
 export default app;
