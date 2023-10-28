@@ -1,10 +1,45 @@
-import { mergeRouters } from "../trpc";
+import { eq } from 'drizzle-orm';
+import { z } from 'zod';
 
-import ExampleRouter from "./example";
+import schema from '../schema';
+import { mergeRouters, protectedProcedure, t } from '../trpc';
+import AuthRouter from './auth';
+import ExampleRouter from './example';
 
 type AppRouter = typeof appRouter;
 
-const appRouter = mergeRouters(ExampleRouter);
+const appRouter = mergeRouters(
+    ExampleRouter,
+    t.router({
+        auth: AuthRouter,
+        getMyInfo: protectedProcedure.query(async ({ ctx }) => {
+            const [userInfo] = await ctx.db
+                .select()
+                .from(schema.user)
+                .where(eq(schema.user.id, ctx.userId))
+                .limit(1);
+
+            return userInfo;
+        }),
+        editMyInfo: protectedProcedure
+            .input(
+                z.object({
+                    nickname: z.string(),
+                }),
+            )
+            .mutation(async ({ input, ctx }) => {
+                const [userInfo] = await ctx.db
+                    .update(schema.user)
+                    .set({
+                        nickname: input.nickname,
+                    })
+                    .where(eq(schema.user.id, ctx.userId))
+                    .returning();
+
+                return userInfo;
+            }),
+    }),
+);
 
 export default appRouter;
 export type { AppRouter };

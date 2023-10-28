@@ -2,11 +2,17 @@
 // ========================================================
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import {
+    Navigate,
+    RouterProvider,
+    createBrowserRouter,
+} from 'react-router-dom';
 
 import App from './App';
 import './index.css';
 import RootLayout from './layouts/RootLayout';
+import LoginPage from './pages/login';
+import RegisterPage from './pages/register';
 import RootProvider from './providers';
 
 // Router
@@ -21,12 +27,12 @@ const router = createBrowserRouter([
                 element: <App />,
             },
             {
-                path: 'about',
-                element: <div>About</div>,
+                path: 'login',
+                element: <LoginPage />,
             },
             {
-                path: 'login',
-                element: <div>Login</div>,
+                path: 'register',
+                element: <RegisterPage />,
             },
         ],
     },
