@@ -18,7 +18,7 @@ import trpc from './utils/trpc';
 const StyleComp = styled.div`
     .main-container {
         padding: 10px;
-        width: 300px;
+        max-width: 500px;
         height: 400px;
         display: flex;
         flex-direction: column;
@@ -34,8 +34,8 @@ const StyleComp = styled.div`
         width: 179px;
         height: 179px;
         position: absolute;
-        bottom: 310px;
-        right: 140px;
+        top: -100px;
+        left: -40px;
     }
     .closeBtn-container {
         margin-left: auto;
@@ -46,16 +46,21 @@ const StyleComp = styled.div`
         flex-direction: row;
         justify-content: space-between;
         z-index: 100;
+        gap: 12px;
     }
     .category {
+        flex: 1;
         background-color: rgba(42, 100, 173, 0.3);
-        width: 50px;
         height: 28px;
         padding: 10px;
         border-radius: 25px;
         color: rgba(0, 0, 0, 0.6);
         cursor: pointer;
-
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        white-space: nowrap;
+        align-items: center;
         font-family: Jua;
         font-size: 12px;
         font-style: normal;
@@ -64,8 +69,8 @@ const StyleComp = styled.div`
         text-align: center;
     }
     .message-container {
-        width: 271px;
-        height: 198px;
+        width: 100%;
+        height: 200px;
         border-radius: 12px;
         background: rgba(217, 217, 217, 0.38);
     }
@@ -97,8 +102,8 @@ const MessageInput: React.FC<{
 
     return (
         <Modal isDismissable={true} isOpen={isOpen} onOpenChange={onOpenChange}>
-            <StyleComp>
-                <Dialog className="main-container">
+            <StyleComp className="flex w-screen items-center  justify-center px-4">
+                <Dialog className="main-container w-full">
                     {({ close }) => (
                         <>
                             <img className="chito-img" src="/chito1.png"></img>
@@ -136,7 +141,7 @@ const MessageInput: React.FC<{
                                             }}
                                         >
                                             {<value.icon size={16} />}
-                                            {value.title}
+                                            <span>{value.title}</span>
                                         </div>
                                     ),
                                 )}
