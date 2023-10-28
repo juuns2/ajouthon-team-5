@@ -84,9 +84,13 @@ const StyleComp = styled.div`
 `;
 const MessageInput: React.FC<{
     isOpen: boolean;
+    lat: number | null;
+    lng: number | null;
     onOpenChange: (isOpen: boolean) => void;
-}> = ({ isOpen, onOpenChange }) => {
+}> = ({ isOpen, onOpenChange, lat, lng }) => {
     const createBubbleMutation = trpc.bubble.add.useMutation();
+
+    const [message, setMessage] = useState('');
 
     const [selectedCategory, setSelectedCategory] =
         useState<keyof typeof CategoryInfo>();
@@ -139,6 +143,8 @@ const MessageInput: React.FC<{
                             </div>
                             <label className="message-container">
                                 <textarea
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
                                     placeholder="시간과 장소를 입력하세요"
                                     className="h-full w-full bg-transparent p-2"
                                 />
@@ -149,7 +155,10 @@ const MessageInput: React.FC<{
                                 onClick={() => {
                                     createBubbleMutation.mutate(
                                         {
-                                            text: 'test',
+                                            category: 'food',
+                                            latitude: lat!,
+                                            longitude: lng!,
+                                            message: message,
                                         },
                                         {
                                             onSuccess: () => {

@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { LongPressEventType, useLongPress } from 'use-long-press';
 
 import MessageInput from './MessageInput';
 import MyMessage from './MyMessage';
@@ -12,7 +13,40 @@ const App = () => {
         initialData: [],
     });
 
-    const apiContext = trpc.useContext();
+    const apiContext = trpc.useUtils();
+
+    const mapInstance = useRef<kakao.maps.Map | null>(null);
+
+    const bind = useLongPress(
+        (e, m) => {
+            const mapProjection = mapInstance.current.getProjection();
+
+            console.log(
+                e.nativeEvent.touches[0].clientX,
+                e.nativeEvent.touches[0].clientY,
+            );
+
+            const latlng = mapProjection.coordsFromContainerPoint(
+                new kakao.maps.Point(
+                    e.nativeEvent.touches[0].clientX,
+                    e.nativeEvent.touches[0].clientY,
+                ),
+            );
+
+            e.stopPropagation();
+
+            setCreateModalData((prev) => ({
+                ...prev,
+                isOpen: true,
+                lat: latlng.getLat(),
+                lng: latlng.getLng(),
+            }));
+        },
+        {
+            cancelOnMovement: true,
+            detect: LongPressEventType.Touch,
+        },
+    );
 
     trpc.bubble.onAdd.useSubscription(undefined, {
         onData: (data) => {
@@ -27,7 +61,15 @@ const App = () => {
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-    let [isOpen, setOpen] = React.useState(false);
+    let [createModalData, setCreateModalData] = React.useState<{
+        isOpen: boolean;
+        lat: number | null;
+        lng: number | null;
+    }>({
+        isOpen: false,
+        lat: null,
+        lng: null,
+    });
 
     const handleCategoryToggle = (categories: string[]) => {
         // 선택된 카테고리를 업데이트
@@ -49,27 +91,36 @@ const App = () => {
             <ToggleButtons onCategoryToggle={handleCategoryToggle} />
 
             <Map
-                onRightClick={(t, e) => {
-                    setOpen(true);
+                onCreate={(map) => {
+                    mapInstance.current = map;
                 }}
+                {...bind()}
                 style={{ width: '100%', height: '100%' }}
                 center={{ lat: 37.282, lng: 127.045 }}
                 level={3}
             >
                 {filteredData.map((data) => (
                     <ThunderMarker
-                        userId={data.userId}
-                        category={data.category}
-                        key={data.content}
-                        content={data.content}
-                        lat={data.latitude}
-                        lng={data.longitude}
-                        likes={data.likes}
+                        category={data.bubble.category}
+                        key={data.bubble.id}
+                        lat={data.bubble.latitude}
+                        lng={data.bubble.longitude}
+                        message={data.bubble.message}
                     />
                 ))}
             </Map>
 
-            <MessageInput isOpen={isOpen} onOpenChange={setOpen} />
+            <MessageInput
+                isOpen={createModalData.isOpen}
+                lat={createModalData.lat}
+                lng={createModalData.lng}
+                onOpenChange={(v) =>
+                    setCreateModalData((prev) => ({
+                        ...prev,
+                        isOpen: v,
+                    }))
+                }
+            />
 
             {/* <MyMessage /> */}
         </main>

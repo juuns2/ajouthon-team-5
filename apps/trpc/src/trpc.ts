@@ -12,6 +12,8 @@ const mergeRouters = t.mergeRouters;
 const isAuthed = t.middleware((opts) => {
     const { ctx } = opts;
 
+    console.log(ctx.req.session);
+
     if (!ctx.req.session.userId) {
         throw new TRPCError({
             code: 'UNAUTHORIZED',

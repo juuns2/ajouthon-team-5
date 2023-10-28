@@ -45,7 +45,11 @@ const AuthRouter = router({
                     .returning();
             }
 
-            ctx.req.session.userId = userInfo.id;
+            (ctx.req as Express.Request).session.userId = userInfo.id;
+
+            console.log(ctx.req.session);
+
+            (ctx.req as Express.Request).session.save();
 
             return userInfo;
         }),

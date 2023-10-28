@@ -2,6 +2,7 @@ import {
     createWSClient,
     httpBatchLink,
     loggerLink,
+    splitLink,
     wsLink,
 } from '@trpc/client';
 
@@ -9,7 +10,7 @@ import trpc from '../utils/trpc';
 import { queryClient } from './query';
 
 const wsClient = createWSClient({
-    url: `ws://localhost:5001`,
+    url: `ws://localhost:5173/websocket`,
 });
 
 const trpcClient = trpc.createClient({
@@ -19,11 +20,16 @@ const trpcClient = trpc.createClient({
                 process.env.NODE_ENV === 'development' ||
                 (opts.direction === 'down' && opts.result instanceof Error),
         }),
-        wsLink({
-            client: wsClient,
-        }),
-        httpBatchLink({
-            url: `${import.meta.env.VITE_TRPC_SERVER_URL}`,
+        splitLink({
+            condition(op) {
+                return op.type === 'subscription';
+            },
+            true: wsLink({
+                client: wsClient,
+            }),
+            false: httpBatchLink({
+                url: `${import.meta.env.VITE_TRPC_SERVER_URL}`,
+            }),
         }),
     ],
 });

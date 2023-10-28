@@ -15,13 +15,11 @@ import CategoryInfo from './components/category';
 
 const MotionButton = motion(Button);
 export const ThunderMarker: React.FC<{
-    userId: string;
     lat: number;
     lng: number;
     category: keyof typeof CategoryInfo;
-    content: string;
-    likes: number;
-}> = ({ userId, lat, lng, category, content, likes }) => {
+    message: string;
+}> = ({ lat, lng, category, message }) => {
     const IconComponent = CategoryInfo[category].icon;
 
     return (
@@ -81,7 +79,7 @@ export const ThunderMarker: React.FC<{
                 >
                     <OverlayArrow />
                     <Dialog>
-                        <MessagePopup userId={userId} content={content} prevLikes={likes}/>
+                        <MessagePopup message={message} />
                     </Dialog>
                 </Popover>
             </DialogTrigger>
