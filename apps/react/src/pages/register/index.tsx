@@ -49,6 +49,10 @@ max-height:900px;
     justify-contents:center;
     align-items:center;
 }
+.notification-text{
+    font-size:0.9rem;
+    color:#C1C1C1;
+}
 .userName-input{
     border-radius: 9px;
 border: 1px solid #C1C1C1;
@@ -80,16 +84,31 @@ color:white;
 export default function RegisterPage() {
     const googleLoginMutation = trpc.auth.googleLogin.useMutation();
     
-/**
- * const [nickname, setNickname] = useState('');
-    const [savedNickname, setSavedNickname] = useState('');
- * const handleNickname = (event) => {
-        setNickname(event.target.value);
-      };
-    const handleSaveNickname = () => {
-        setSavedNickname(nickname);
-      };
- */
+    const [userInput, setUserInput] = useState('');
+    const [isValid,setIsValid] = useState(false);
+    const [displayText, setDisplayText] = useState('...');
+    const [characterImg, setCharacterImg] = useState('/subCharacter1.png')
+    const handleInputChange = (event: { target: { value: any; }; }) => {
+        const inputText = event.target.value;
+        setUserInput(inputText);
+    
+        // 특수문자를 검사하기 위한 정규표현식
+        const specialCharacterRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/;
+    
+        // 입력값에서 특수문자가 포함되었는지 검사
+        const containsSpecialCharacter = specialCharacterRegex.test(inputText);
+        
+        if (containsSpecialCharacter && inputText.length > 10) {
+          setIsValid(false);
+          setDisplayText('사용하실 수 없는 닉네임입니당..')
+          setCharacterImg('/subCharacter1.png')
+        } else {
+          setIsValid(true);
+          setDisplayText('사용하실 수 있는 닉네임입니당!')
+          setCharacterImg('/subCharacter2.png')
+
+        }
+      }
     
     return (
         <StyleComp>
@@ -101,13 +120,13 @@ export default function RegisterPage() {
                 <h2 className='text-userName'>닉네임을 설정해주세요.</h2>
             </div>
             <div className='input-container'>
-                <div>...</div>
-                <img className='character-img'src='/subCharacter1.png'></img>
+                <div>{displayText}</div>
+                {!isValid && (<div className='notification-text'>특수문자 제외 10자 이내</div>) }
+                <img className='character-img'src={characterImg}></img>
                 <input
                     placeholder="닉네임(를) 입력하세요."
                     className="userName-input"
-                    /*value={nickname}
-                    onChange={handleNickname}*/
+                    onChange={handleInputChange}
 
                 />
                 <div className='line'> </div>
