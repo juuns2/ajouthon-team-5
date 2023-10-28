@@ -5,6 +5,8 @@ import {
     Button,
     Dialog,
     DialogTrigger,
+    Modal,
+    ModalOverlay,
     OverlayArrow,
     Popover,
 } from 'react-aria-components';
@@ -123,8 +125,15 @@ const App = () => {
                     />
                 ))}
             </Map>
-            {/* <MessageInput />
-            <MyMessage /> */}
+
+            <DialogTrigger>
+                <Button>Sign up…</Button>
+                <ModalOverlay>
+                    <MessageInput />
+                </ModalOverlay>
+            </DialogTrigger>
+
+            {/* <MyMessage /> */}
         </main>
     );
 };
