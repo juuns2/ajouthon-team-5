@@ -28,7 +28,7 @@ const trpcClient = trpc.createClient({
                 client: wsClient,
             }),
             false: httpBatchLink({
-                url: `${import.meta.env.VITE_TRPC_SERVER_URL}`,
+                url: `http://localhost:5173/trpc`,
             }),
         }),
     ],
