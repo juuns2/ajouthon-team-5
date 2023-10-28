@@ -1,3 +1,10 @@
+import {
+    BeerIcon,
+    BookIcon,
+    DumbbellIcon,
+    JoystickIcon,
+    MoreHorizontalIcon,
+} from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { BsBook } from 'react-icons/bs';
 import { IoFastFoodOutline, IoGameControllerOutline } from 'react-icons/io5';
@@ -5,6 +12,34 @@ import { LiaDumbbellSolid } from 'react-icons/lia';
 import { PiDotsThreeCircleLight } from 'react-icons/pi';
 
 import '../css/ToggleButtons.css';
+
+const category = {
+    study: {
+        title: '공부',
+        icon: BookIcon,
+        className: 'from-pink-500 to-yellow-500',
+    },
+    food: {
+        title: '밥 & 술',
+        icon: BeerIcon,
+        className: 'from-blue-500 to-cyan-500',
+    },
+    workout: {
+        title: '운동',
+        icon: DumbbellIcon,
+        className: 'from-emerald-500 to-cyan-500',
+    },
+    game: {
+        title: '게임',
+        icon: JoystickIcon,
+        className: 'from-red-500 to-slate-500',
+    },
+    etc: {
+        title: '기타',
+        icon: MoreHorizontalIcon,
+        className: 'from-pink-500 to-purple-500',
+    },
+};
 
 const ToggleButtons = ({ onCategoryToggle }) => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -29,59 +64,28 @@ const ToggleButtons = ({ onCategoryToggle }) => {
             setSelectedCategories([...selectedCategories, category]);
         }
 
-        console.log(selectedCategories);
-
         // 부모 컴포넌트로 선택된 카테고리를 전달
         onCategoryToggle(selectedCategories);
     };
 
     return (
-        <div className="button-container absolute inset-x-0 top-4 ">
-            <div className="flex w-fit gap-4 px-4">
-                <button
-                    onClick={() => toggleCategory('study')}
-                    className={`toggle-button ${
-                        selectedCategories.includes('study') ? 'active' : ''
-                    }`}
-                >
-                    <BsBook />
-                    공부
-                </button>
-                <button
-                    onClick={() => toggleCategory('food')}
-                    className={`toggle-button ${
-                        selectedCategories.includes('food') ? 'active' : ''
-                    }`}
-                >
-                    <IoFastFoodOutline />밥 & 술
-                </button>
-                <button
-                    onClick={() => toggleCategory('workout')}
-                    className={`toggle-button ${
-                        selectedCategories.includes('workout') ? 'active' : ''
-                    }`}
-                >
-                    <LiaDumbbellSolid />
-                    운동
-                </button>
-                <button
-                    onClick={() => toggleCategory('game')}
-                    className={`toggle-button ${
-                        selectedCategories.includes('game') ? 'active' : ''
-                    }`}
-                >
-                    <IoGameControllerOutline />
-                    게임
-                </button>
-                <button
-                    onClick={() => toggleCategory('etc')}
-                    className={`toggle-button ${
-                        selectedCategories.includes('etc') ? 'active' : ''
-                    }`}
-                >
-                    <PiDotsThreeCircleLight />
-                    기타
-                </button>
+        <div className="button-container absolute inset-x-0 top-4 bg-black/30 px-2 py-2">
+            <div className="flex w-fit gap-2">
+                {Object.entries(category).map(([key, value]) => (
+                    <button
+                        onClick={() => toggleCategory(key)}
+                        className={`toggle-button ${
+                            selectedCategories.includes(key)
+                                ? 'grayscale-[0%]'
+                                : 'grayscale-[70%]'
+                        } bg-gradient-to-tr text-white shadow-lg ${
+                            value.className
+                        }`}
+                    >
+                        <value.icon />
+                        {value.title}
+                    </button>
+                ))}
             </div>
         </div>
     );

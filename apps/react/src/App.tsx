@@ -34,7 +34,7 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
         >
             <DialogTrigger>
                 <MotionButton
-                    className="cursor-pointer select-none focus:ring-0"
+                    className="cursor-pointer select-none"
                     whileTap={{
                         scale: 1.2,
                         transition: {
