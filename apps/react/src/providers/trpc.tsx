@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import {
     createWSClient,
     httpBatchLink,
@@ -7,7 +8,6 @@ import {
 } from '@trpc/client';
 
 import trpc from '../utils/trpc';
-import { queryClient } from './query';
 
 const wsClient = createWSClient({
     url: `ws://${window.location.host}/websocket`,
@@ -35,6 +35,8 @@ const trpcClient = trpc.createClient({
 });
 
 const TRPCProvider = ({ children }: { children: React.ReactNode }) => {
+    const queryClient = useQueryClient();
+
     return (
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
             {children}

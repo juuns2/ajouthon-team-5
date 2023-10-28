@@ -21,7 +21,11 @@ import RootProvider from './providers';
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <RootLayout />,
+        element: (
+            <RootProvider>
+                <RootLayout />
+            </RootProvider>
+        ),
         children: [
             {
                 path: '/',
@@ -49,8 +53,6 @@ const router = createBrowserRouter([
 // ========================================================
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <RootProvider>
-            <RouterProvider router={router} />
-        </RootProvider>
+        <RouterProvider router={router} />
     </React.StrictMode>,
 );
