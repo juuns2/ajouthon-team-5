@@ -1,6 +1,13 @@
 import { motion } from 'framer-motion';
 import { HeartIcon, ZapIcon } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
+import {
+    Button,
+    Dialog,
+    DialogTrigger,
+    OverlayArrow,
+    Popover,
+} from 'react-aria-components';
 import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
 import MessageInput from './MessageInput';
 import MessagePopup from './MessagePopup';
@@ -23,23 +30,53 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
                 lng: lng,
             }}
         >
-            <motion.div
-                className="cursor-pointer"
-                whileHover={{
-                    scale: 1.2,
-                    transition: {
-                        duration: 0.2,
-                    },
-                }}
-            >
-                {/* 커스텀 오버레이에 표시할 내용입니다 */}
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md">
-                    <ZapIcon size={32} strokeWidth="1" fill="yellow" />
-                </div>
-                <div className="absolute -bottom-1 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md">
-                    <HeartIcon size={12} strokeWidth="1" fill="red" />
-                </div>
-            </motion.div>
+            <DialogTrigger>
+                <Button>
+                    <motion.div
+                        className="cursor-pointer select-none"
+                        whileTap={{
+                            scale: 1.2,
+                            transition: {
+                                duration: 0.2,
+                            },
+                        }}
+                        whileHover={{
+                            scale: 1.2,
+                            transition: {
+                                duration: 0.2,
+                            },
+                        }}
+                    >
+                        {/* 커스텀 오버레이에 표시할 내용입니다 */}
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md">
+                            <ZapIcon size={32} strokeWidth="1" fill="yellow" />
+                        </div>
+                        <div className="absolute -bottom-1 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md">
+                            <HeartIcon size={12} strokeWidth="1" fill="red" />
+                        </div>
+                    </motion.div>
+                </Button>
+                <Popover
+                    placement="top"
+                    arrowSize={6}
+                    className={({ isEntering, isExiting }) => `
+        placement-bottom:mt-2 placement-top:mb-2 group w-[280px] rounded-lg bg-white ring-1 ring-black/10 drop-shadow-lg
+        ${
+            isEntering
+                ? 'animate-in fade-in placement-bottom:slide-in-from-top-1 placement-top:slide-in-from-bottom-1 duration-200 ease-out'
+                : ''
+        }
+        ${
+            isExiting
+                ? 'animate-out fade-out placement-bottom:slide-out-to-top-1 placement-top:slide-out-to-bottom-1 duration-150 ease-in'
+                : ''
+        }
+      `}
+                >
+                    <OverlayArrow />
+                    <Dialog>test</Dialog>
+                </Popover>
+            </DialogTrigger>
         </CustomOverlayMap>
     );
 };
@@ -68,6 +105,9 @@ const App = () => {
         <main className="flex h-[100dvh] w-screen flex-col items-center justify-center">
             <ToggleButtons onCategoryToggle={handleCategoryToggle} />
             <Map
+                onRightClick={(t, e) => {
+                    console.log(e.latLng);
+                }}
                 style={{ width: '100%', height: '100%' }}
                 center={{ lat: 37.282, lng: 127.045 }}
                 level={3}
