@@ -127,7 +127,7 @@ const App = () => {
             </Map>
 
             <DialogTrigger>
-                <Button>Sign up…</Button>
+                <Button>Write</Button>
                 <ModalOverlay>
                     <MessageInput />
                 </ModalOverlay>
