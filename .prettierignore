@@ -4,9 +4,6 @@ pnpm-lock.yaml
 # dependencies
 node_modules
 
-# testing
-coverage
-
 # builds
 dist
 
@@ -30,7 +27,3 @@ tsconfig.tsbuildinfo
 # turbo
 .turbo
 
-# cypress
-screenshots
-videos
-downloads
