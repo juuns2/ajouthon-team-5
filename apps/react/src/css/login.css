@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Jua&display=swap");
+
+*{  
+    font-family: 'Jua', sans-serif;
+}
+
+body{
+    background-image: linear-gradient(to bottom, #2A64AD, #ffff);
+}
+
+.login-container {
+    margin-top: 20%;
+    margin-bottom: 20%;
+}
+
+h1{
+    text-align: center;
+    /* margin-top: 50px; */
+    font-size: 40px;
+    color: #F8F8F8;
+}
+
+.yellow {
+    color: #F6CB4C;
+}
+
+.login-container img {
+    margin: 20px;
+}
+
+h4{
+    text-align: center;
+    font-size: 20px;
+}
+
+h3{
+    margin-left: 30px;
+    text-align: left;
+    font-size: 31px;
+}
+
+img{
+    width: 400px;
+    height: 300px;
+    margin: auto;
+}
+
+.google-login-btn {
+    border-radius: 15px;
+    color: #000;
+    font-size: 30px;
+    width: 400px;
+    height: 60px;
+    background-color: #fff;
+    border: 2px solid #000;
+    margin-top: 10px;
+    width: 100%;
+}
