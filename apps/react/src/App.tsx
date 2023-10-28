@@ -16,15 +16,19 @@ import MessageInput from './MessageInput';
 import MessagePopup from './MessagePopup';
 import MyMessage from './MyMessage';
 import ToggleButtons from './components/ToggleButtons';
+import CategoryInfo from './components/category';
 import { mockDatas } from './mockdata';
 import trpc from './utils/trpc';
 
 const MotionButton = motion(Button);
 
-const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
-    lat,
-    lng,
-}) => {
+const ThunderMarker: React.FC<{
+    lat: number;
+    lng: number;
+    category: keyof typeof CategoryInfo;
+}> = ({ lat, lng, category }) => {
+    const IconComponent = CategoryInfo[category].icon;
+
     return (
         <CustomOverlayMap
             position={{
@@ -48,10 +52,18 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
                         },
                     }}
                 >
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md">
-                        <ZapIcon size={32} strokeWidth="1" fill="yellow" />
-                        <div className="absolute -bottom-1 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md">
-                            <HeartIcon size={12} strokeWidth="1" fill="red" />
+                    <div
+                        className={`flex h-14 w-14 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md`}
+                    >
+                        <ZapIcon size={36} strokeWidth="1" fill="yellow" />
+                        <div
+                            className={
+                                'absolute -bottom-2 -right-3 flex h-8 w-8 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md ' +
+                                CategoryInfo[category].className +
+                                ' bg-gradient-to-tr'
+                            }
+                        >
+                            <IconComponent size={16} strokeWidth="2" />
                         </div>
                     </div>
                 </MotionButton>
@@ -116,6 +128,7 @@ const App = () => {
             >
                 {filteredData.map((data) => (
                     <ThunderMarker
+                        category={data.category}
                         key={data.content}
                         lat={data.latitude}
                         lng={data.longitude}
