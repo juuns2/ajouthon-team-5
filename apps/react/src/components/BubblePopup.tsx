@@ -1,5 +1,15 @@
+import EmojiPicker from 'emoji-picker-react';
 import React from 'react';
 import { useState } from 'react';
+import {
+    Button,
+    Dialog,
+    DialogTrigger,
+    Modal,
+    ModalOverlay,
+    OverlayArrow,
+    Popover,
+} from 'react-aria-components';
 import styled from 'styled-components';
 
 //메인 화면에서 번개를 클릭하면 보여지는 메세지 팝업
@@ -46,7 +56,7 @@ const StyleComp = styled.div`
     }
 `;
 
-function MessagePopup({
+function BubblePopup({
     nickname,
     message,
 }: {
@@ -70,6 +80,16 @@ function MessagePopup({
                     style={{ color: LikeBtn ? '#2A64AD' : '#FFFFFF' }}
                 >
                     <div>25</div>
+                    <DialogTrigger>
+                        <Button>Open popover</Button>
+                        <Popover>
+                            <OverlayArrow></OverlayArrow>
+                            <Dialog>
+                                <EmojiPicker />
+                            </Dialog>
+                        </Popover>
+                    </DialogTrigger>
+
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -92,4 +112,4 @@ function MessagePopup({
     );
 }
 
-export default MessagePopup;
+export default BubblePopup;

@@ -10,7 +10,7 @@ import {
 } from 'react-aria-components';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 
-import MessagePopup from './components/MessagePopup';
+import BubblePopup from './components/BubblePopup';
 import CategoryInfo from './data/category';
 
 const MotionButton = motion(Button);
@@ -20,7 +20,8 @@ export const ThunderMarker: React.FC<{
     lng: number;
     category: keyof typeof CategoryInfo;
     message: string;
-}> = ({ lat, lng, category, message, nickname }) => {
+    meEmoji?: {};
+}> = ({ lat, lng, category, message, nickname, meEmoji }) => {
     const IconComponent = CategoryInfo[category].icon;
 
     return (
@@ -59,6 +60,15 @@ export const ThunderMarker: React.FC<{
                         >
                             <IconComponent size={16} strokeWidth="2" />
                         </div>
+                        {meEmoji && (
+                            <div
+                                className={
+                                    'absolute -right-3 -top-2 flex h-8 w-8 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 bg-gradient-to-tr from-pink-500 to-yellow-500 shadow-md'
+                                }
+                            >
+                                <span>👍</span>
+                            </div>
+                        )}
                     </div>
                 </MotionButton>
                 <Popover
@@ -80,7 +90,7 @@ export const ThunderMarker: React.FC<{
                 >
                     <OverlayArrow />
                     <Dialog>
-                        <MessagePopup nickname={nickname} message={message} />
+                        <BubblePopup nickname={nickname} message={message} />
                     </Dialog>
                 </Popover>
             </DialogTrigger>

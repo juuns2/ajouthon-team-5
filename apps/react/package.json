@@ -14,6 +14,7 @@
         "@trpc/client": "^10.43.0",
         "@trpc/react-query": "^10.43.0",
         "@trpc/server": "^10.43.0",
+        "emoji-picker-react": "^4.5.6",
         "framer-motion": "^10.16.4",
         "lucide-react": "^0.290.0",
         "react": "^18.2.0",
