@@ -1,0 +1,16 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "eslint": "^8.52.0",
+    "prettier": "^3.0.3",
+    "turbo": "^1.10.16",
+    "typescript": "^4.9.5"
+  }
+}
