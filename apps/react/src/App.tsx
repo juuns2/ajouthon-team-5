@@ -5,7 +5,7 @@ const App = () => {
   const { isLoading } = trpc.example.useQuery();
 
   return (
-    <main className="w-screen h-[100dvh] flex-col justify-center flex items-center">
+    <main className="flex h-[100dvh] w-screen flex-col items-center justify-center">
       <Map // 지도를 표시할 Container
         id="map"
         center={{
