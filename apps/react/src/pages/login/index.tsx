@@ -20,11 +20,9 @@ export default function LoginPage() {
                             {
                                 onSuccess: (data) => {
                                     if (data.nickname === null) {
-                                        navigate('/register');
+                                        return navigate('/register');
                                     }
-                                    if (data.nickname === null) {
-                                        navigate('/');
-                                    }
+                                    return navigate('/');
                                 },
                             },
                         );

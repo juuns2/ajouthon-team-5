@@ -18,8 +18,8 @@ import trpc from './utils/trpc';
 const StyleComp = styled.div`
     .main-container {
         padding: 10px;
-        width: 292px;
-        height: 391px;
+        width: 300px;
+        height: 400px;
         display: flex;
         flex-direction: column;
         border-radius: 25px;
