@@ -1,8 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { BsBook } from 'react-icons/bs';
-import { IoFastFoodOutline, IoGameControllerOutline } from 'react-icons/io5';
-import { LiaDumbbellSolid } from 'react-icons/lia';
-import { PiDotsThreeCircleLight } from 'react-icons/pi';
+import { useEffect, useState } from 'react';
 
 import '../css/ToggleButtons.css';
 import CategoryInfo from './category';
@@ -13,8 +9,6 @@ const ToggleButtons = ({ onCategoryToggle }) => {
     useEffect(() => {
         // 선택된 카테고리가 변경될 때 부모 컴포넌트로 전달
         onCategoryToggle(selectedCategories);
-
-        console.log(selectedCategories);
 
         // 부모 컴포넌트로 선택된 카테고리를 전달
         onCategoryToggle(selectedCategories);
@@ -39,6 +33,7 @@ const ToggleButtons = ({ onCategoryToggle }) => {
             <div className="flex w-fit gap-2">
                 {Object.entries(CategoryInfo).map(([key, value]) => (
                     <button
+                        key={key}
                         onClick={() => toggleCategory(key)}
                         className={`toggle-button ${
                             selectedCategories.includes(key)

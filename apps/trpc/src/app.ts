@@ -1,10 +1,13 @@
 import * as trpcExpress from '@trpc/server/adapters/express';
+import { NodeHTTPCreateContextFnOptions } from '@trpc/server/adapters/node-http';
+import { applyWSSHandler } from '@trpc/server/adapters/ws';
 import cors from 'cors';
 import express from 'express';
 import session from 'express-session';
+import ws from 'ws';
 
 import db from './db';
-import appRouter from './router';
+import appRouter, { AppRouter } from './router';
 
 const app = express();
 
@@ -24,20 +27,32 @@ app.use(
     }),
 );
 
-const createContext = ({
+const createContext = <TRequest, TResponse>({
     req,
     res,
-}: trpcExpress.CreateExpressContextOptions) => {
+}: NodeHTTPCreateContextFnOptions<TRequest, TResponse>) => {
     return { req, res, db };
 };
 
 app.use(
     '/trpc',
-    trpcExpress.createExpressMiddleware({
+    trpcExpress.createExpressMiddleware<AppRouter>({
         router: appRouter,
         createContext,
     }),
 );
+
+const PORT = process.env.PORT || 5001;
+
+const server = app.listen(PORT, () =>
+    console.log(`Listening on port ${PORT}.`),
+);
+
+applyWSSHandler<AppRouter>({
+    wss: new ws.Server({ server }), // * <- pass the server
+    router: appRouter, // * <- pass the router
+    createContext, // * <- pass the context
+});
 
 export default app;
 export { createContext };

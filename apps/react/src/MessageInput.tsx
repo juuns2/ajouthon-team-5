@@ -11,6 +11,8 @@ import {
 } from 'react-aria-components';
 import styled from 'styled-components';
 
+import trpc from './utils/trpc';
+
 //화면을 꾹 누르면 뜨는 메세지를 작성하는 팝업 (화면누를때 뜨는건 구현해야함)
 const StyleComp = styled.div`
     .main-container {
@@ -98,6 +100,8 @@ const MessageInput: React.FC<{
     isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
 }> = ({ isOpen, onOpenChange }) => {
+    const createBubbleMutation = trpc.bubble.add.useMutation();
+
     const [StudyBtn, setStudyBtn] = useState(false);
     const [FoodBtn, setFoodBtn] = useState(false);
     const [ExerciseBtn, setExerciseBtn] = useState(false);
@@ -209,7 +213,22 @@ const MessageInput: React.FC<{
                             />
                             <div className="placeholder-text">모임의 장소, 시간, 내용을 작성해주세요.<br />메세지는 24시간 이후 자동 삭제됩니다.</div>
                             </label>
-                            <button className="submit-btn" type="submit">
+                            <button
+                                className="submit-btn"
+                                type="submit"
+                                onClick={() => {
+                                    createBubbleMutation.mutate(
+                                        {
+                                            text: 'test',
+                                        },
+                                        {
+                                            onSuccess: () => {
+                                                close();
+                                            },
+                                        },
+                                    );
+                                }}
+                            >
                                 등록하기
                             </button>
                         </>
