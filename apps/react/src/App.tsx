@@ -82,7 +82,7 @@ const App = () => {
         }
 
         return bubbleData.filter((data) =>
-            selectedCategories.includes(data.category),
+            selectedCategories.includes(data.bubble.category),
         );
     }, [bubbleData, selectedCategories]);
 
