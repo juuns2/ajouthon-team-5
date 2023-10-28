@@ -98,7 +98,7 @@ function MessageInput() {
 
     return (
         <StyleComp>
-            <Modal isDismissable>
+            <Modal isDismissable={true}>
                 <Dialog className="main-container">
                     {({ close }) => (
                         <>

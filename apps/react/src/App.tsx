@@ -110,6 +110,7 @@ const App = () => {
         <main className="flex h-[100dvh] w-screen flex-col items-center justify-center">
             <ToggleButtons onCategoryToggle={handleCategoryToggle} />
             <Map
+                className="-z-10"
                 onRightClick={(t, e) => {
                     console.log(e.latLng);
                 }}
@@ -127,7 +128,13 @@ const App = () => {
             </Map>
 
             <DialogTrigger>
-                <Button>Write</Button>
+                <Button
+                    className={
+                        'fixed bottom-3 right-3 h-16 w-16 rounded-full bg-white drop-shadow-lg'
+                    }
+                >
+                    글 쓰기
+                </Button>
                 <ModalOverlay>
                     <MessageInput />
                 </ModalOverlay>
