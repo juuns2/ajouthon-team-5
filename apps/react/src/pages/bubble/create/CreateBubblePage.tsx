@@ -12,8 +12,8 @@ import {
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import CategoryInfo from './components/category';
-import trpc from './utils/trpc';
+import CategoryInfo from '../../../data/category';
+import trpc from '../../../utils/trpc';
 
 //화면을 꾹 누르면 뜨는 메세지를 작성하는 팝업 (화면누를때 뜨는건 구현해야함)
 const StyleComp = styled.div`

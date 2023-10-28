@@ -3,11 +3,11 @@ import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { LongPressEventType, useLongPress } from 'use-long-press';
 
-import MessageInput from './MessageInput';
-import MyMessage from './MyMessage';
-import MyPageIcon from './MyPageIcon';
 import { ThunderMarker } from './ThunderMarker';
+import MyPageIcon from './components/MyPageIcon';
 import ToggleButtons from './components/ToggleButtons';
+import MessageInput from './pages/bubble/create/CreateBubblePage';
+import MyMessage from './pages/bubble/edit/EditBubblePage';
 import trpc from './utils/trpc';
 
 const App = () => {

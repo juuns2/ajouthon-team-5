@@ -10,8 +10,8 @@ import {
 } from 'react-aria-components';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 
-import MessagePopup from './MessagePopup';
-import CategoryInfo from './components/category';
+import MessagePopup from './components/MessagePopup';
+import CategoryInfo from './data/category';
 
 const MotionButton = motion(Button);
 export const ThunderMarker: React.FC<{

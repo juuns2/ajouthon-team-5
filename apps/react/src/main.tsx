@@ -9,9 +9,9 @@ import {
 } from 'react-router-dom';
 
 import App from './App';
-import MessageInput from './MessageInput';
 import './index.css';
 import RootLayout from './layouts/RootLayout';
+import MessageInput from './pages/bubble/create/CreateBubblePage';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
 import RootProvider from './providers';

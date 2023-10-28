@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import '../css/ToggleButtons.css';
-import CategoryInfo from './category';
+import CategoryInfo from '../data/category';
 
 const ToggleButtons = ({ onCategoryToggle }) => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
