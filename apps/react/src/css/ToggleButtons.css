@@ -1,11 +1,5 @@
 .button-container {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 100%;
-    display: flex;
     /* justify-content: space-around; */
-    gap: 10px;
     overflow-x: auto;
     white-space: nowrap;
     z-index: 9999;
@@ -25,10 +19,10 @@
     align-items: center;
     justify-content: center;
     gap: 2px;
-    background-color: #BFD0E6;
-    color: #4C535C;
+    background-color: #bfd0e6;
+    color: #4c535c;
     font-weight: bold;
-    border: 2px solid #BFD0E6;
+    border: 2px solid #bfd0e6;
     border-radius: 20px;
     padding: 5px 10px;
     margin: 5px;
@@ -36,6 +30,6 @@
 }
 
 .toggle-button.active {
-    background-color: #2A64AD;
+    background-color: #2a64ad;
     color: white;
 }
