@@ -54,10 +54,18 @@ function MessagePopup({
     message: string;
 }) {
     const [LikeBtn, setLikeBtn] = useState(false);
+    let [LikeNum,setLikeNum] = useState(0)
 
     const handleButtonClick = () => {
-        setLikeBtn(!LikeBtn);
-    };
+        
+        if(LikeBtn){
+            setLikeNum(LikeNum-=1);
+            setLikeBtn(!LikeBtn);
+        }else{
+            setLikeNum(LikeNum+=1);
+            setLikeBtn(!LikeBtn);
+        }
+    };;
     return (
         <StyleComp>
             <div className="main-container">
@@ -69,7 +77,7 @@ function MessagePopup({
                     onClick={handleButtonClick}
                     style={{ color: LikeBtn ? '#2A64AD' : '#FFFFFF' }}
                 >
-                    <div>25</div>
+                    <div>{LikeNum}</div>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
