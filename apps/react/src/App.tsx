@@ -16,16 +16,20 @@ import MessageInput from './MessageInput';
 import MessagePopup from './MessagePopup';
 import MyMessage from './MyMessage';
 import ToggleButtons from './components/ToggleButtons';
+import CategoryInfo from './components/category';
 import { mockDatas } from './mockdata';
 import trpc from './utils/trpc';
 import MessageRepeatPopUp from './MessageRepeatPopUp';
 
 const MotionButton = motion(Button);
 
-const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
-    lat,
-    lng,
-}) => {
+const ThunderMarker: React.FC<{
+    lat: number;
+    lng: number;
+    category: keyof typeof CategoryInfo;
+}> = ({ lat, lng, category }) => {
+    const IconComponent = CategoryInfo[category].icon;
+
     return (
         <CustomOverlayMap
             position={{
@@ -35,7 +39,7 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
         >
             <DialogTrigger>
                 <MotionButton
-                    className="cursor-pointer select-none focus:ring-0"
+                    className="cursor-pointer select-none"
                     whileTap={{
                         scale: 1.2,
                         transition: {
@@ -49,10 +53,18 @@ const ThunderMarker: React.FC<{ lat: number; lng: number }> = ({
                         },
                     }}
                 >
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md">
-                        <ZapIcon size={32} strokeWidth="1" fill="yellow" />
-                        <div className="absolute -bottom-1 -right-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md">
-                            <HeartIcon size={12} strokeWidth="1" fill="red" />
+                    <div
+                        className={`flex h-14 w-14 items-center justify-center rounded-full border-4 border-orange-500 bg-slate-500 shadow-md`}
+                    >
+                        <ZapIcon size={36} strokeWidth="1" fill="yellow" />
+                        <div
+                            className={
+                                'absolute -bottom-2 -right-3 flex h-8 w-8 items-center justify-center rounded-full border-2 border-orange-500 bg-slate-500 shadow-md ' +
+                                CategoryInfo[category].className +
+                                ' bg-gradient-to-tr'
+                            }
+                        >
+                            <IconComponent size={16} strokeWidth="2" />
                         </div>
                     </div>
                 </MotionButton>
@@ -89,6 +101,8 @@ const App = () => {
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
+    let [isOpen, setOpen] = React.useState(false);
+
     const handleCategoryToggle = (categories: string[]) => {
         // 선택된 카테고리를 업데이트
         setSelectedCategories(categories);
@@ -110,7 +124,7 @@ const App = () => {
 
             <Map
                 onRightClick={(t, e) => {
-                    console.log(e.latLng);
+                    setOpen(true);
                 }}
                 style={{ width: '100%', height: '100%' }}
                 center={{ lat: 37.282, lng: 127.045 }}
@@ -118,6 +132,7 @@ const App = () => {
             >
                 {filteredData.map((data) => (
                     <ThunderMarker
+                        category={data.category}
                         key={data.content}
                         lat={data.latitude}
                         lng={data.longitude}
@@ -125,18 +140,7 @@ const App = () => {
                 ))}
             </Map>
 
-            <DialogTrigger>
-                <Button
-                    className={
-                        'fixed bottom-3 right-3 z-10 h-16 w-16 rounded-full bg-white drop-shadow-lg'
-                    }
-                >
-                    글 쓰기
-                </Button>
-                <ModalOverlay>
-                    <MessageInput />
-                </ModalOverlay>
-            </DialogTrigger>
+            <MessageInput isOpen={isOpen} onOpenChange={setOpen} />
 
             {/* <MyMessage /> */}
         </main>
