@@ -20,3 +20,6 @@ tsconfig.tsbuildinfo
 
 # turbo
 .turbo
+
+# vscode
+.vscode
