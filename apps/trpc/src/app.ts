@@ -4,35 +4,51 @@ import { applyWSSHandler } from '@trpc/server/adapters/ws';
 import cors from 'cors';
 import express from 'express';
 import session from 'express-session';
+import http from 'http';
 import ws from 'ws';
 
 import db from './db';
 import appRouter, { AppRouter } from './router';
 
-const app = express();
-
-app.use(
-    session({
-        secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: true,
-        cookie: { secure: false },
-    }),
-);
-
-app.use(express.json());
-app.use(
-    cors({
-        origin: ['https://vite-rpc-react.vercel.app', 'http://localhost:5173'],
-    }),
-);
-
 const createContext = <TRequest, TResponse>({
     req,
     res,
 }: NodeHTTPCreateContextFnOptions<TRequest, TResponse>) => {
-    return { req, res, db };
+    return {
+        req,
+        res,
+        db,
+        ws: res instanceof ws.WebSocket ? res : undefined,
+    };
 };
+
+const app = express();
+const server = http.createServer(app);
+
+const wss = new ws.Server({ server });
+const wsHandler = applyWSSHandler<AppRouter>({
+    wss: wss, // * <- pass the server
+    router: appRouter, // * <- pass the router
+    createContext, // * <- pass the context
+});
+
+app.use(
+    cors({
+        origin: ['http://localhost:5173'],
+    }),
+);
+
+app.use(
+    session({
+        name: 'sess',
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: false,
+        cookie: { maxAge: 24 * 60 * 60 * 1000, secure: false },
+    }),
+);
+
+app.use(express.json());
 
 app.use(
     '/trpc',
@@ -44,15 +60,14 @@ app.use(
 
 const PORT = process.env.PORT || 5001;
 
-const server = app.listen(PORT, () =>
-    console.log(`Listening on port ${PORT}.`),
-);
+server.listen(PORT, () => console.log(`Listening on port ${PORT}.`));
 
-applyWSSHandler<AppRouter>({
-    wss: new ws.Server({ server }), // * <- pass the server
-    router: appRouter, // * <- pass the router
-    createContext, // * <- pass the context
+server.on('error', console.error);
+
+process.on('SIGTERM', () => {
+    wsHandler.broadcastReconnectNotification();
+    wss.close();
+    server.close();
 });
 
-export default app;
 export { createContext };
