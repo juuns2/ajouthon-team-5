@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 
 import App from './App';
+import MessageInput from './MessageInput';
 import './index.css';
 import RootLayout from './layouts/RootLayout';
 import LoginPage from './pages/login';
@@ -23,8 +24,14 @@ const router = createBrowserRouter([
         element: <RootLayout />,
         children: [
             {
-                index: true,
+                path: '/',
                 element: <App />,
+                children: [
+                    {
+                        path: '/bubble/create',
+                        element: <MessageInput />,
+                    },
+                ],
             },
             {
                 path: 'login',

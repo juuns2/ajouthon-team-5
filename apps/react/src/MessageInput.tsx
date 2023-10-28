@@ -9,6 +9,7 @@ import {
     OverlayArrow,
     Popover,
 } from 'react-aria-components';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import CategoryInfo from './components/category';
@@ -87,12 +88,13 @@ const StyleComp = styled.div`
         border-radius: 25px;
     }
 `;
-const MessageInput: React.FC<{
-    isOpen: boolean;
-    lat: number | null;
-    lng: number | null;
-    onOpenChange: (isOpen: boolean) => void;
-}> = ({ isOpen, onOpenChange, lat, lng }) => {
+const MessageInput: React.FC = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const lat: number = location.state.lat;
+    const lng: number = location.state.lng;
+
     const createBubbleMutation = trpc.bubble.add.useMutation();
 
     const [message, setMessage] = useState('');
@@ -101,8 +103,16 @@ const MessageInput: React.FC<{
         useState<keyof typeof CategoryInfo>();
 
     return (
-        <Modal isDismissable={true} isOpen={isOpen} onOpenChange={onOpenChange}>
-            <StyleComp className="flex w-screen items-center  justify-center px-4">
+        <Modal
+            isDismissable={true}
+            isOpen={true}
+            onOpenChange={(v) => {
+                if (!v) {
+                    navigate(-1);
+                }
+            }}
+        >
+            <StyleComp className="flex w-screen items-center justify-center px-4">
                 <Dialog className="main-container w-full">
                     {({ close }) => (
                         <>

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { LongPressEventType, useLongPress } from 'use-long-press';
 
 import MessageInput from './MessageInput';
@@ -13,6 +14,8 @@ const App = () => {
     const { data: bubbleData } = trpc.bubble.getAll.useQuery(undefined, {
         initialData: [],
     });
+
+    const navigate = useNavigate();
 
     const apiContext = trpc.useUtils();
 
@@ -36,12 +39,12 @@ const App = () => {
 
             e.stopPropagation();
 
-            setCreateModalData((prev) => ({
-                ...prev,
-                isOpen: true,
-                lat: latlng.getLat(),
-                lng: latlng.getLng(),
-            }));
+            navigate('/bubble/create', {
+                state: {
+                    lat: latlng.getLat(),
+                    lng: latlng.getLng(),
+                },
+            });
         },
         {
             cancelOnMovement: true,
@@ -61,16 +64,6 @@ const App = () => {
     });
 
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
-    let [createModalData, setCreateModalData] = React.useState<{
-        isOpen: boolean;
-        lat: number | null;
-        lng: number | null;
-    }>({
-        isOpen: false,
-        lat: null,
-        lng: null,
-    });
 
     const handleCategoryToggle = (categories: string[]) => {
         // 선택된 카테고리를 업데이트
@@ -112,17 +105,7 @@ const App = () => {
                 ))}
             </Map>
 
-            <MessageInput
-                isOpen={createModalData.isOpen}
-                lat={createModalData.lat}
-                lng={createModalData.lng}
-                onOpenChange={(v) =>
-                    setCreateModalData((prev) => ({
-                        ...prev,
-                        isOpen: v,
-                    }))
-                }
-            />
+            <Outlet />
 
             <MyPageIcon />
             {/* <MyMessage /> */}
